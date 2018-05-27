@@ -23,8 +23,8 @@ class QueryForm(FlaskForm):
     ])
 
     destination = SelectMultipleField(u'B楼目的地: ', choices = [
-        ('210', u'B210'), 
-        ('211', u'B211'),
+        ('11', u'B210'), 
+        ('12', u'B211'),
     ])
     
     submit = SubmitField(u'查询')

@@ -4,33 +4,32 @@
     for the name and the id.
 '''
 
+class Points():
 
-class ShortestPath():
+    def __init__(self):
 
-    def __init__():
-        
-        self.inf = 999999
+        filex = open('sources/xidian.txt', 'r')
 
-        self.landmark_n = 100
+        content = filex.readlines()
+            
+        self.points = []
 
-        self.landmark = u'' * self.landmark_n
+        for i in range(len(content)):
+            
+            idx, x, y = content[i].split(' ')
 
-        self.distance = [[inf] * self.landmark_n for _ in range(self.landmark_n)]
-        
-    def add_edge(x, y, z):
+            self.points.append((idx, x, y))
 
-        distance[x][y] = z
 
-    def calc():
+    def getLat(self, x):
+
+        return self.points[int(x) - 1][1], self.points[int(x) - 1][2]
+
+
+def getLat(x):
+
+    points = Points()
+
+    return points.getLat(x)
+
     
-        for k in range(self.landmark_n):
-            for i in range(self.landmark_n):
-                for j in range(self.landmark_n):
-
-                    distance[i][j] = min(distance[i][k] + distance[k][j], distance[i][j]) 
-
-
-
-
-
-
