@@ -1,23 +1,24 @@
 import static 
 import heapq
 from PIL import Image, ImageDraw
+from static import Points, BlockList
 
 class ShortestPath():
     
     def __init__(self):
         
         self.inf = 999999
-        self.pointsNum = len(static.points)
-        self.points = static.points
-        self.distance = [self.inf] * self.pointsNum
+        self.points = BlockList()
+        self.pointsNum = self.points.pointsNum()
+        self.distance = [999999] * self.pointsNum
         self.pre = [-1] * self.pointsNum
         self.visited = [False] * self.pointsNum
 
     def relax(self, s_id, now_id):
         
-        if self.distance[s_id] + static.getEdge(s_id, now_id) < self.distance[now_id]:
-        self.distance[now_id] = self.distance[s_id] + static.getEdge(s_id, now_id)
-        self.pre[now_id] = s_id
+        if self.distance[s_id] + self.points.getEdge(s_id, now_id) < self.distance[now_id]:
+            self.distance[now_id] = self.distance[s_id] + self.points.getEdge(s_id, now_id)
+            self.pre[now_id] = s_id
 
     def printPath(self, current, source):
         
@@ -25,14 +26,15 @@ class ShortestPath():
 
             return [source]
 
-        return [current] + printPath(self.pre[current], source)
+        return [current] + self.printPath(self.pre[current], source)
         
         
-    def find_shortest(self, s_id, d_id):
-        
+    def findShortest(self, s_id, d_id):
+    
+
         self.distance[s_id] = 0 
 
-        for times in range(pointsNum - 1):
+        for times in range(self.pointsNum - 1):
 
             k_node = 0
 
@@ -40,9 +42,9 @@ class ShortestPath():
 
             for k in range(self.pointsNum):
 
-                if not self.visited[k] and self.distance[s_id] < minmum:
-
-                    minmum = self.distance[s_id]
+                if not self.visited[k] and self.distance[k] < minmum:
+                    
+                    minmum = self.distance[k]
                     
                     k_node = k
             
@@ -50,43 +52,98 @@ class ShortestPath():
         
             for des_node in range(self.pointsNum):
     
-                if static.exist(k_node, des_node):
+                if self.points.getEdge(k_node, des_node) <= 1:
+   
+                    self.relax(k_node, des_node)
     
-                    relax(k_node, des_node)
+        print(self.distance[d_id])
+
+        return self.printPath(d_id, s_id)
+
             
-            return self.printPath(d_id, s_id)
+    def findDraw(self, in_name, out_name):
 
-def mark_on_graph(path, filename):
+        s_id = self.points.getIDByName(in_name)
 
-    image = Image.open(filename)
+        d_id = self.points.getIDByName(out_name)
 
-    draw = ImageDraw.Draw(image)
+        print(s_id, d_id)
 
-    for i in range(len(path) - 1):
+        idList = self.findShortest(s_id, d_id)
 
-        source = path[i]
+        path = self.points.realBlockList(idList)
 
-        dest = path[i + 1]
+        image = Image.open('static/map.png')
 
-        s_pix = source.getPixel(source)
+        draw = ImageDraw.Draw(image)
 
-        d_pix = source.getPixel(dest)
+        i = 0
 
-        draw.line((s_pix.x, s_pix.y, y_pix.x, y_pix.y), fill = (0, 0, 255))
+        while i < (len(path) - 1):
 
-    image.save(filename.replace('ori', 'tmp'))
-        
+            pre = i
 
-import os
+            mid = i + 1
+
+            nxt = mid
+
+            print('list is', idList[pre], idList[mid], idList[nxt])
+            
+            print('coor is', path[pre], path[mid], path[nxt])
+            if i < len(path) - 2:
+
+                nxt = mid + 1
+
+            if self.points.idIsStair(idList[mid]):
+
+                
+
+                pre_x, pre_y  = path[pre]
+
+                mid1_x, mid1_y = path[mid]
+
+                mid1_y = pre_y
+
+                mid2_x, mid2_y = mid1_x, mid1_y
+
+                nxt_x, nxt_y = path[nxt]
+
+                mid2_y = nxt_y
+ 
+                draw.line((pre_x, pre_y, mid1_x, mid1_y), fill = 'red')
+                draw.line((mid1_x, mid1_y, mid2_x, mid2_y), fill = 'red')
+                draw.line((nxt_x, nxt_y, mid2_x, mid2_y), fill = 'red')
+
+            else:
+
+                pre_x, pre_y = path[pre]
+
+                mid_x, mid_y = path[mid]
+
+                nxt_x, nxt_y = path[nxt]
+
+                if not self.points.idIsStair(idList[pre]):
+
+                    draw.line((pre_x, pre_y, mid_x, mid_y), 'red')
+
+                if not self.points.idIsStair(idList[nxt]):
+    
+                    draw.line((mid_x, mid_y, nxt_x, nxt_y), 'red')
+            
+            i += 1
+
+        image.save('tmp/{}{}.png'.format(in_name, out_name))
+
+        return image
+            
 
 def query(location, destination):
 
-    source = static.mapNameToID(location)
+    sp = ShortestPath()
 
-    destination = static.mapNameToID(destination)
+    sp.findDraw(location, destination)
 
-    SP = ShortestPath()
-    
-    tmp_image_path = 'tmp/ori.img'
 
-    mark_on_graph(SP.find_shortest(source, destination), tmp_image_path)
+if __name__ == '__main__':
+
+    query('201', '511')

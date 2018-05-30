@@ -2,6 +2,26 @@ from flask_wtf import FlaskForm
 from wtforms import SelectMultipleField, SubmitField
 from wtforms.validators import DataRequired
 
+class BQueryForm(FlaskForm):
+
+    location = SelectMultipleField(u'当前位置: ', choices = [
+        ('101', u'B101'),
+        ('201', u'B201'),
+        ('301', u'B301'),
+        ('401', u'B401'),
+        ('511', u'B511'),
+    ])
+
+    destination = SelectMultipleField(u'B楼目的地: ', choices = [
+        ('101', u'B101'),
+        ('201', u'B201'),
+        ('301', u'B301'),
+        ('401', u'B401'),
+        ('511', u'B511'),
+    ])
+    
+    submit = SubmitField(u'查询')
+
 class QueryForm(FlaskForm):
 
     location = SelectMultipleField(u'当前位置: ', choices = [
