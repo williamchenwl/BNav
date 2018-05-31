@@ -37,7 +37,8 @@ def bindex():
 def outside(src, dst):  
     print(static.getLat(src))
     (ax, ay), (did, dx, dy) = static.getLat(src)
-    return render_template('outside.html', ax = ax, ay = ay, bx = dx, by = dy)
+    query(did, dst)
+    return render_template('outside.html', ax = ax, ay = ay, bx = dx, by = dy, img_id = did + dst)
 
 @app.route('/broute/<src>/<dst>', methods = ['GET', 'POST'])
 def broute(src, dst):

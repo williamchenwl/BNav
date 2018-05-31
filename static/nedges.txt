@@ -83,3 +83,9 @@ st73 st74
 st74 st75
 st75 st76
 st76 st77
+exit1 exit2
+exit2 st11
+exit3 st21
+exit4 st32
+exit5 318
+exit6 st73

@@ -97,6 +97,10 @@ class InnerBlock():
 
         return self.stair
 
+    def showName(self):
+
+        return self.name
+
     def central(self):
 
         per_w = width / 23
@@ -179,6 +183,8 @@ class BlockList():
         for x in range(len(idList)):
 
             realList.append(self.blocks[idList[x]].central())
+        
+            print(self.blocks[idList[x]].showName())
 
         return realList
 
