@@ -67,6 +67,7 @@ class ShortestPath():
 
         d_id = self.points.getIDByName(out_name)
 
+    
         print(s_id, d_id)
 
         idList = self.findShortest(s_id, d_id)
@@ -76,6 +77,14 @@ class ShortestPath():
         image = Image.open('static/map.png')
 
         draw = ImageDraw.Draw(image)
+        
+        s_x, s_y = path[0]
+
+        draw.ellipse([s_x - 5, s_y - 5, s_x + 5, s_y + 5],  fill = 'yellow')
+
+        d_x, d_y = path[-1] 
+
+        draw.ellipse([d_x - 5, d_y - 5, d_x + 5, d_y + 5],  fill = 'green')
 
         i = 0
 
@@ -93,6 +102,7 @@ class ShortestPath():
             if i < len(path) - 2:
 
                 nxt = mid + 1
+            
 
             if self.points.idIsStair(idList[mid]):
 
