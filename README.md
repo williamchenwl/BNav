@@ -24,7 +24,11 @@ python app.py
 
 pip install uwsgi
 cd /var/www/BNav
-uwsgi --ini 
+uwsgi --ini BNav.ini
 
 ```
+
+an example site can be find at 47.106.108.89 temporarily
+
+some specific location data might be inaccurate
 
